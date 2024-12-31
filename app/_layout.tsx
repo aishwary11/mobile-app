@@ -1,18 +1,13 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Stack, usePathname, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
+function useLoadFonts() {
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
@@ -22,18 +17,49 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     }
   }, [loaded]);
+  return loaded;
+}
 
-  if (!loaded) {
+function useAuthRedirect() {
+  const router = useRouter();
+  const pathname = usePathname();
+  useEffect(() => {
+    (async () => {
+      try {
+        const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
+        if (!isLoggedIn && !pathname.startsWith('/(auth)/login')) {
+          router.replace('/(auth)/login');
+        }
+      } catch (error) {
+        console.error('Failed to check login status:', error);
+      }
+    })();
+  }, [pathname, router]);
+}
+
+export default function RootLayout() {
+  const fontsLoaded = useLoadFonts();
+  useAuthRedirect();
+  if (!fontsLoaded) {
     return null;
   }
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <Stack
+      initialRouteName="(auth)/login"
+      screenOptions={{ headerShown: false, gestureEnabled: true }}
+    >
+      <Stack.Screen
+        name="(auth)/login"
+        options={{ title: 'Login', headerShown: false }}
+      />
+      <Stack.Screen
+        name="(protected)/about"
+        options={{ title: 'About', headerShown: false }}
+      />
+      <Stack.Screen
+        name="(protected)/contact"
+        options={{ title: 'Contact', headerShown: false }}
+      />
+    </Stack>
   );
 }
