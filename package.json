@@ -10,8 +10,7 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "lint": "expo lint",
-    "prettier": "prettier --write .",
-    "prepare": "husky"
+    "prettier": "prettier --write ."
   },
   "husky": {
     "hooks": {
