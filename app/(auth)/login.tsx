@@ -27,7 +27,8 @@ const LoginScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Image source={require('../../assets/images/login.jpg')} style={styles.logo} />
+      <Image source={require('../../assets/images/login.jpg')}
+        style={styles.logo} />
       <Text style={styles.title}>Welcome Back!</Text>
       <Text style={styles.subtitle}>Login to your account</Text>
       <TextInput
