@@ -7,11 +7,12 @@ import 'react-native-reanimated';
 
 SplashScreen.preventAutoHideAsync();
 
+const authPath = ['/(auth)/login', '/(auth)/register'];
+
 function useLoadFonts() {
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
-
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
@@ -27,8 +28,12 @@ function useAuthRedirect() {
     (async () => {
       try {
         const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
-        if (!isLoggedIn && !pathname.startsWith('/(auth)/login')) {
-          router.replace('/(auth)/login');
+        if (!isLoggedIn && !authPath.includes(pathname)) {
+          if (pathname === '/register') {
+            router.replace('/(auth)/register');
+          } else {
+            router.replace('/(auth)/login');
+          }
         }
       } catch (error) {
         console.error('Failed to check login status:', error);
@@ -51,6 +56,10 @@ export default function RootLayout() {
       <Stack.Screen
         name="(auth)/login"
         options={{ title: 'Login', headerShown: false }}
+      />
+      <Stack.Screen
+        name="(auth)/register"
+        options={{ title: 'Register', headerShown: false }}
       />
       <Stack.Screen
         name="(protected)/about"

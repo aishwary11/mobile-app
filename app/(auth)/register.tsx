@@ -4,20 +4,32 @@ import { Link } from 'expo-router';
 import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-const LoginScreen = () => {
+const RegisterScreen = () => {
   const [user, setUser] = useState({
     email: '',
     password: '',
+    confirmPassword: '',
   });
 
-  const handleLogin = async () => {
+  const handleRegister = async () => {
+    if (user.password !== user.confirmPassword) {
+      Notifications.scheduleNotificationAsync({
+        content: {
+          title: 'Registration Failed',
+          body: 'Passwords do not match',
+        },
+        trigger: null,
+      });
+      return;
+    }
+
     try {
-      await axiosInstance.post('/user/login', user);
-      alert('Login successful');
+      await axiosInstance.post('/user/register', user);
+      alert('Registration successful');
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: 'Login Successful',
-          body: 'Welcome back!',
+          title: 'Registration Successful',
+          body: 'Welcome!',
         },
         trigger: null,
       });
@@ -32,8 +44,8 @@ const LoginScreen = () => {
         source={require('../../assets/images/login.jpg')}
         style={styles.logo}
       />
-      <Text style={styles.title}>Welcome Back!</Text>
-      <Text style={styles.subtitle}>Login to your account</Text>
+      <Text style={styles.title}>Create Account</Text>
+      <Text style={styles.subtitle}>Sign up to get started</Text>
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -51,17 +63,22 @@ const LoginScreen = () => {
         secureTextEntry
         placeholderTextColor="#aaa"
       />
+      <TextInput
+        style={styles.input}
+        placeholder="Confirm Password"
+        value={user.confirmPassword}
+        onChangeText={confirmPassword => setUser({ ...user, confirmPassword })}
+        secureTextEntry
+        placeholderTextColor="#aaa"
+      />
       <TouchableOpacity
         style={styles.button}
-        onPress={handleLogin}
+        onPress={handleRegister}
       >
-        <Text style={styles.buttonText}>Login</Text>
+        <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
-      <TouchableOpacity>
-        <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-      </TouchableOpacity>
-      <Link href="/(auth)/register">
-        <Text style={styles.signupText}>Don't have an account? Sign up</Text>
+      <Link href="/(auth)/login">
+        <Text style={styles.loginText}>Already have an account? Log in</Text>
       </Link>
     </View>
   );
@@ -116,16 +133,11 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 18,
   },
-  forgotPasswordText: {
-    color: '#007BFF',
-    textAlign: 'center',
-    marginTop: 8,
-  },
-  signupText: {
+  loginText: {
     color: '#007BFF',
     textAlign: 'center',
     marginTop: 16,
   },
 });
 
-export default LoginScreen;
+export default RegisterScreen;
