@@ -2,7 +2,7 @@ import { Stack } from 'expo-router';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-export default function NotFoundScreen() {
+export default function NotFound() {
   return (
     <>
       <Stack.Screen options={{ title: 'Oops!' }} />
