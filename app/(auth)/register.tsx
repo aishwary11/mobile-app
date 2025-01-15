@@ -1,10 +1,10 @@
-import axiosInstance from '@/utils/axios';
+import axiosInstance from '@/app/common/utils/axios';
 import * as Notifications from 'expo-notifications';
 import { Link } from 'expo-router';
 import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-const RegisterScreen = () => {
+const Register = () => {
   const [user, setUser] = useState({
     email: '',
     password: '',
@@ -22,7 +22,6 @@ const RegisterScreen = () => {
       });
       return;
     }
-
     try {
       await axiosInstance.post('/user/register', user);
       alert('Registration successful');
@@ -140,4 +139,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegisterScreen;
+export default Register;

@@ -1,10 +1,12 @@
-import axiosInstance from '@/utils/axios';
-import * as Notifications from 'expo-notifications';
-import { Link } from 'expo-router';
+import axiosInstance from '@/app/common/utils/axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+// import * as Notifications from 'expo-notifications';
+import { Link, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-const LoginScreen = () => {
+const Login = () => {
+  const router = useRouter();
   const [user, setUser] = useState({
     email: '',
     password: '',
@@ -12,15 +14,20 @@ const LoginScreen = () => {
 
   const handleLogin = async () => {
     try {
-      await axiosInstance.post('/user/login', user);
-      alert('Login successful');
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          title: 'Login Successful',
-          body: 'Welcome back!',
-        },
-        trigger: null,
-      });
+      const { data } = await axiosInstance.post('/user/login', user);
+      if (data.status) {
+        await AsyncStorage.setItem('token', data?.data?.token);
+        // await Notifications.scheduleNotificationAsync({
+        //   content: {
+        //     title: 'Login Successful',
+        //     body: 'Welcome back!',
+        //   },
+        //   trigger: null,
+        // });
+        router.replace('/(protected)/about');
+      } else {
+        console.error('Login failed: ', data.message);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -128,4 +135,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default Login;

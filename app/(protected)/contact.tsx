@@ -1,13 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-const ContactPage = () => {
+const Contact = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Contact Us</Text>
       <Text style={styles.text}>Name: Haha lola</Text>
       <Text style={styles.text}>Email: contact@example.com</Text>
-      <Text style={styles.text}>Phone: +123 456 7890</Text>
+      <Text style={styles.text}>Phone: +91-85916936</Text>
     </View>
   );
 };
@@ -33,4 +33,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ContactPage;
+export default Contact;

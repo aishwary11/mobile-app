@@ -1,13 +1,20 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFonts } from 'expo-font';
-import { Stack, usePathname, useRouter } from 'expo-router';
+// import * as Notifications from 'expo-notifications';
+import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
+import 'react-native-gesture-handler';
 import 'react-native-reanimated';
+import useAuth from './hooks/useAuth';
 
 SplashScreen.preventAutoHideAsync();
-
-const authPath = ['/(auth)/login', '/(auth)/register'];
+// Notifications.setNotificationHandler({
+//   handleNotification: async () => ({
+//     shouldShowAlert: true,
+//     shouldPlaySound: true,
+//     shouldSetBadge: true,
+//   }),
+// });
 
 function useLoadFonts() {
   const [loaded] = useFonts({
@@ -21,30 +28,9 @@ function useLoadFonts() {
   return loaded;
 }
 
-function useAuthRedirect() {
-  const router = useRouter();
-  const pathname = usePathname();
-  useEffect(() => {
-    (async () => {
-      try {
-        const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
-        if (!isLoggedIn && !authPath.includes(pathname)) {
-          if (pathname === '/register') {
-            router.replace('/(auth)/register');
-          } else {
-            router.replace('/(auth)/login');
-          }
-        }
-      } catch (error) {
-        console.error('Failed to check login status:', error);
-      }
-    })();
-  }, [pathname, router]);
-}
-
 export default function RootLayout() {
   const fontsLoaded = useLoadFonts();
-  useAuthRedirect();
+  useAuth();
   if (!fontsLoaded) {
     return null;
   }
