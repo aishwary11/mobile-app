@@ -1,4 +1,4 @@
-import { Stack } from 'expo-router';
+import { Link, Stack } from 'expo-router';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
@@ -10,7 +10,9 @@ export default function NotFound() {
         <Text style={styles.title}>Screen Not Found</Text>
         <Text style={styles.message}>The Screen you are looking for does not exist.</Text>
         <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Go Back</Text>
+          <Link href="/(auth)/login">
+            <Text style={styles.signupText}>Login</Text>
+          </Link>
         </TouchableOpacity>
       </View>
     </>
@@ -46,5 +48,11 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#ffffff',
     fontSize: 16,
+  },
+  signupText: {
+    color: '#007BFF',
+    textAlign: 'center',
+    marginTop: 16,
+    fontSize: 18,
   },
 });

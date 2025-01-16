@@ -1,4 +1,4 @@
-import { Link } from "expo-router";
+import { Link } from 'expo-router';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     color: '#007BFF',
     textAlign: 'center',
     marginTop: 16,
-    fontSize: 18
+    fontSize: 18,
   },
 });
 

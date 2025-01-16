@@ -6,7 +6,7 @@ const axiosInstance = axios.create({
   cancelToken: axios.CancelToken.source().token,
 });
 
-axiosInstance.interceptors.request.use(async (config) => {
+axiosInstance.interceptors.request.use(async config => {
   const token = await AsyncStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
