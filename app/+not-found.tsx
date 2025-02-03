@@ -11,7 +11,7 @@ export default function NotFound() {
         <Text style={styles.message}>The Screen you are looking for does not exist.</Text>
         <TouchableOpacity style={styles.button}>
           <Link href="/(auth)/login">
-            <Text style={styles.signupText}>Login</Text>
+            <Text style={styles.buttonText}>Login</Text>
           </Link>
         </TouchableOpacity>
       </View>
@@ -48,11 +48,5 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#ffffff',
     fontSize: 16,
-  },
-  signupText: {
-    color: '#007BFF',
-    textAlign: 'center',
-    marginTop: 16,
-    fontSize: 18,
-  },
+  }
 });
