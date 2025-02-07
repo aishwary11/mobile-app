@@ -33,11 +33,13 @@ export default function RootLayout() {
   const fontsLoaded = useLoadFonts();
   const { isAuthenticated } = useAuth();
   const [appIsReady, setAppIsReady] = useState(false);
+
   useEffect(() => {
     if (fontsLoaded) {
       setAppIsReady(true);
     }
   }, [fontsLoaded]);
+
   if (!appIsReady) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#121212' }}>
