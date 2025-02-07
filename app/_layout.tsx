@@ -37,6 +37,7 @@ export default function RootLayout() {
     if (fontsLoaded) {
       setAppIsReady(true);
     }
+
   }, [fontsLoaded]);
   if (!appIsReady) {
     return (
