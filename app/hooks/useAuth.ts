@@ -1,16 +1,18 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { usePathname, useRouter } from 'expo-router';
-import * as SecureStore from 'expo-secure-store';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const authPath = ['/login', '/register'];
 
 function useAuth() {
   const router = useRouter();
   const pathname = usePathname();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   useEffect(() => {
     (async () => {
       try {
-        const token = await SecureStore.getItemAsync('token');
+        const token = await AsyncStorage.getItem('token');
+        setIsAuthenticated(!!token);
         if (!token && !authPath.includes(pathname)) {
           pathname === '/register' ? router.replace('/(auth)/register') : router.replace('/(auth)/login');
         } else if (token && authPath.includes(pathname)) {
@@ -21,6 +23,7 @@ function useAuth() {
       }
     })();
   }, [pathname, router]);
+  return { isAuthenticated };
 }
 
 export default useAuth;

@@ -1,8 +1,9 @@
 import { useFonts } from 'expo-font';
+import { ActivityIndicator, View } from 'react-native';
 // import * as Notifications from 'expo-notifications';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import 'react-native-gesture-handler';
 import 'react-native-reanimated';
 import useAuth from './hooks/useAuth';
@@ -17,26 +18,36 @@ SplashScreen.preventAutoHideAsync();
 // });
 
 function useLoadFonts() {
-  const [loaded] = useFonts({
+  const [fontsLoaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
   useEffect(() => {
-    if (loaded) {
+    if (fontsLoaded) {
       SplashScreen.hideAsync();
     }
-  }, [loaded]);
-  return loaded;
+  }, [fontsLoaded]);
+  return fontsLoaded;
 }
 
 export default function RootLayout() {
   const fontsLoaded = useLoadFonts();
-  useAuth();
-  if (!fontsLoaded) {
-    return null;
+  const { isAuthenticated } = useAuth();
+  const [appIsReady, setAppIsReady] = useState(false);
+  useEffect(() => {
+    if (fontsLoaded) {
+      setAppIsReady(true);
+    }
+  }, [fontsLoaded]);
+  if (!appIsReady) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#121212' }}>
+        <ActivityIndicator size="large" color="#FFFFFF" />
+      </View>
+    );
   }
   return (
     <Stack
-      initialRouteName="(auth)/login"
+      initialRouteName={isAuthenticated ? '(protected)/about' : '(auth)/login'}
       screenOptions={{ headerShown: false, gestureEnabled: true }}
     >
       <Stack.Screen
