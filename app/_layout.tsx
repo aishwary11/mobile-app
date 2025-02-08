@@ -1,9 +1,9 @@
 import { useFonts } from 'expo-font';
-import { ActivityIndicator, View } from 'react-native';
-// import * as Notifications from 'expo-notifications';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+// import * as Notifications from 'expo-notifications';
+import { ActivityIndicator, View } from 'react-native';
 import 'react-native-gesture-handler';
 import 'react-native-reanimated';
 import useAuth from './hooks/useAuth';
@@ -28,19 +28,10 @@ function useLoadFonts() {
   }, [fontsLoaded]);
   return fontsLoaded;
 }
-
 export default function RootLayout() {
   const fontsLoaded = useLoadFonts();
   const { isAuthenticated } = useAuth();
-  const [appIsReady, setAppIsReady] = useState(false);
-
-  useEffect(() => {
-    if (fontsLoaded) {
-      setAppIsReady(true);
-    }
-  }, [fontsLoaded]);
-
-  if (!appIsReady) {
+  if (!fontsLoaded) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#121212' }}>
         <ActivityIndicator

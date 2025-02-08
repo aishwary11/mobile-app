@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { usePathname, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 
-const authPath = ['/login', '/register'];
+const authPath = ['/(auth)/login', '/(auth)/register'];
 
 function useAuth() {
   const router = useRouter();
@@ -12,7 +12,7 @@ function useAuth() {
     (async () => {
       try {
         const token = await AsyncStorage.getItem('token');
-        setIsAuthenticated(!!token);
+        setIsAuthenticated(Boolean(token));
         if (!token && !authPath.includes(pathname)) {
           pathname === '/register' ? router.replace('/(auth)/register') : router.replace('/(auth)/login');
         } else if (token && authPath.includes(pathname)) {
