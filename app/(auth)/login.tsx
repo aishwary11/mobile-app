@@ -38,6 +38,7 @@ const Login = () => {
       <Image
         source={require('../../assets/images/login.jpg')}
         style={styles.logo}
+        resizeMode="contain"
       />
       <Text style={styles.title}>Welcome Back!</Text>
       <Text style={styles.subtitle}>Login to your account</Text>
