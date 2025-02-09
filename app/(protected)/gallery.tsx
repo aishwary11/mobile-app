@@ -54,31 +54,25 @@ const Gallery = () => {
     }
   };
 
-  const renderItem = ({ item }: { item: MediaLibrary.Asset; }) => (
-    <Image source={{ uri: item.uri }} style={styles.image} />
+  const renderItem = ({ item }: { item: MediaLibrary.Asset }) => (
+    <Image
+      source={{ uri: item.uri }}
+      style={styles.image}
+    />
   );
 
   return (
-    <SafeAreaView
-      style={[
-        styles.container,
-        colorScheme === 'dark' ? styles.darkContainer : styles.lightContainer,
-      ]}
-    >
+    <SafeAreaView style={[styles.container, colorScheme === 'dark' ? styles.darkContainer : styles.lightContainer]}>
       <View style={styles.header}>
-        <Text
-          style={[
-            styles.headerText,
-            colorScheme === 'dark' ? styles.darkText : styles.lightText,
-          ]}
-        >
-          Gallery
-        </Text>
-        <Button title="Upload" onPress={handleUpload} />
+        <Text style={[styles.headerText, colorScheme === 'dark' ? styles.darkText : styles.lightText]}>Gallery</Text>
+        <Button
+          title="Upload"
+          onPress={handleUpload}
+        />
       </View>
       <FlatList
         data={mediaAssets}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         numColumns={3}
         renderItem={renderItem}
         contentContainerStyle={styles.galleryContainer}
