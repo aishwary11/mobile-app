@@ -1,9 +1,10 @@
 import axiosInstance from '@/app/common/utils/axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 // import * as Notifications from 'expo-notifications';
 import { Link, useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 const Login = () => {
   const router = useRouter();
@@ -16,7 +17,7 @@ const Login = () => {
     try {
       const { data } = await axiosInstance.post('/user/login', user);
       if (data.status) {
-        await AsyncStorage.setItem('token', data?.data?.token);
+        Platform.OS === 'web' ? await AsyncStorage.setItem('token', data?.data?.token) : await SecureStore.setItemAsync('token', data?.data?.token);
         // await Notifications.scheduleNotificationAsync({
         //   content: {
         //     title: 'Login Successful',
