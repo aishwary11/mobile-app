@@ -62,6 +62,10 @@ export default function RootLayout() {
         name="(protected)/contact"
         options={{ title: 'Contact', headerShown: false }}
       />
+      <Stack.Screen
+        name="(protected)/gallery"
+        options={{ title: 'Gallery', headerShown: false }}
+      />
     </Stack>
   );
 }
